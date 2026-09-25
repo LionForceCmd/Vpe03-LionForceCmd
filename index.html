@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Учебный сервис для планирования задач и проверки автодеплоя">
+    <title>Учебный пульс</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Учебный пульс — на главную">
+          <span class="brand-mark" aria-hidden="true">П</span>
+          <span>Учебный пульс</span>
+        </a>
+        <div class="environment-badge">
+          <span class="status-dot" aria-hidden="true"></span>
+          Coolify · автодеплой
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Вариант 2 · учебный сервис</p>
+            <h1 id="page-title">Планируй день. Проверяй деплой.</h1>
+            <p class="hero-description">
+              Добавляй учебные задачи, отмечай прогресс и проверяй, какая версия
+              приложения сейчас работает на сервере.
+            </p>
+          </div>
+          <article class="release-card" aria-labelledby="release-title">
+            <p class="card-label">Текущий релиз</p>
+            <div class="release-heading">
+              <h2 id="release-title" data-release-version>Загрузка…</h2>
+              <span class="live-badge">LIVE</span>
+            </div>
+            <p data-release-message>Получаем информацию о сборке</p>
+            <p class="release-date" data-release-date>Дата деплоя неизвестна</p>
+          </article>
+        </section>
+
+        <section class="dashboard" aria-label="Панель учебных задач">
+          <article class="panel tasks-panel">
+            <div class="panel-header">
+              <div>
+                <p class="card-label">Фокус дня</p>
+                <h2>План на сегодня</h2>
+              </div>
+              <p class="date-label" data-current-date></p>
+            </div>
+
+            <form class="task-form" data-task-form>
+              <label class="visually-hidden" for="task-title">Название задачи</label>
+              <input
+                id="task-title"
+                name="title"
+                type="text"
+                maxlength="120"
+                placeholder="Что нужно сделать?"
+                autocomplete="off"
+                required
+              >
+              <label class="visually-hidden" for="task-priority">Приоритет</label>
+              <select id="task-priority" name="priority">
+                <option value="high">Высокий</option>
+                <option value="medium" selected>Средний</option>
+                <option value="low">Низкий</option>
+              </select>
+              <button class="primary-button" type="submit">Добавить</button>
+            </form>
+
+            <div class="task-toolbar">
+              <div class="filters" aria-label="Фильтр задач">
+                <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Все</button>
+                <button class="filter-button" type="button" data-filter="active" aria-pressed="false">Активные</button>
+                <button class="filter-button" type="button" data-filter="done" aria-pressed="false">Готово</button>
+              </div>
+              <button class="text-button" type="button" data-clear-completed>Очистить готовые</button>
+            </div>
+
+            <ul class="task-list" data-task-list aria-live="polite"></ul>
+
+            <div class="empty-state" data-empty-state hidden>
+              <strong>Здесь пока тихо</strong>
+              <span>Добавь задачу или выбери другой фильтр.</span>
+            </div>
+
+            <div class="progress-block">
+              <div class="progress-copy">
+                <span>Прогресс дня</span>
+                <strong data-progress-text>0 из 0</strong>
+              </div>
+              <progress data-progress max="100" value="0">0%</progress>
+            </div>
+          </article>
+
+          <aside class="side-column" aria-label="Статистика и состояние сервиса">
+            <article class="panel metrics-panel">
+              <p class="card-label">Сегодня</p>
+              <h2>Прогресс</h2>
+              <div class="metrics-grid">
+                <div class="metric">
+                  <span>Всего</span>
+                  <strong data-total-count>0</strong>
+                </div>
+                <div class="metric">
+                  <span>Активных</span>
+                  <strong data-active-count>0</strong>
+                </div>
+                <div class="metric">
+                  <span>Готово</span>
+                  <strong data-done-count>0</strong>
+                </div>
+                <div class="metric metric-accent">
+                  <span>Выполнено</span>
+                  <strong data-completion>0%</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel deploy-panel">
+              <div class="panel-header compact">
+                <div>
+                  <p class="card-label">Состояние</p>
+                  <h2>Контроль деплоя</h2>
+                </div>
+                <span class="check-mark" aria-label="Сервис готов">OK</span>
+              </div>
+              <dl class="deploy-details">
+                <div>
+                  <dt>Версия</dt>
+                  <dd data-release-version>—</dd>
+                </div>
+                <div>
+                  <dt>Порт контейнера</dt>
+                  <dd>80</dd>
+                </div>
+                <div>
+                  <dt>Healthcheck</dt>
+                  <dd><a href="/health" target="_blank" rel="noreferrer">/health</a></dd>
+                </div>
+              </dl>
+              <p class="deploy-hint">
+                После тестового коммита измените <code>release.json</code> и выполните
+                <code>git push</code>.
+              </p>
+            </article>
+          </aside>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>Учебная работа · вариант 2</span>
+        <span>© <span data-current-year></span> Учебный пульс</span>
+      </footer>
+    </div>
+  </body>
+</html>
